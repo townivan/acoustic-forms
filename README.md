@@ -1,4 +1,4 @@
-# birch-builder-4
+# Acoustic Forms Styles
 
 ## Installation/Usage:
 
@@ -8,4 +8,4 @@
 
 ## Description
 
-A quick starter project build to make ftp updates easy.  (by putting the html, css, and js together in the dist folder)
+This is for formatting external form code from Acoustic (Silverpop) for use on other sites.
