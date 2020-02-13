@@ -1,34 +1,35 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" style="background-color: #f5f5f5;">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Acoustic Forms</title>
+    <title>Acoustic Forms - Validation</title>
     <link rel="icon" href="data:;base64,iVBORw0KGgo=">
     <link href="https://fonts.googleapis.com/css?family=Barlow|Open+Sans:300,400,600|Ubuntu&display=swap" rel="stylesheet">
     <link href="main.css" rel="stylesheet">
 </head>
 <body>
     <h1>Form styling for Acoustic external form code</h1>
-    <p><a href="validate.html">See validation example</a></p>
-    <form class="uxform">
+    <p><a href="index.html">Back to simple samples</a></p>
+
+    <form class="uxform" method="get" action="validate2.html">
 
         <div class="uxform-error-summary uxform-hideme"></div>
 
         <div class="uxform-container">
-            <label for="control_1" class="uxform-label">Name:</label>
-            <input type="text" id="control_1" class="uxform-textfield">
+            <label for="control_1" class="uxform-label"><span class="uxform-required">*</span> Name:</label>
+            <input type="text" id="control_1" class="uxform-textfield" data-desc="Name" required>
         </div>
 
         <div class="uxform-container">
             <label for="control_EMAIL" class="uxform-label"><span class="uxform-required">*</span> Email:</label>
-            <input type="email" id="control_EMAIL" class="uxform-textfield" required>
+            <input type="email" id="control_EMAIL" class="uxform-textfield" data-desc="Email" required>
         </div>
         
         <div class="uxform-container">
-            <label for="control_2" class="uxform-label">Favorite Color:</label>
-            <select id="control_2" class="uxform-select">
+            <label for="control_2" class="uxform-label"><span class="uxform-required">*</span> Favorite Color:</label>
+            <select id="control_2" class="uxform-select" data-desc="Favorite Color" required>
                 <option value="" SELECTED>Select one</option>
                 <option value="Red">Red</option>
                 <option value="Blue">Blue</option>
@@ -38,8 +39,8 @@
         </div>
         
         <div class="uxform-container">
-            <label for="control_3" class="uxform-label">Notes:</label>
-            <textarea id="control_3" class="uxform-textarea" cols="1" rows="4"></textarea>
+            <label for="control_3" class="uxform-label"><span class="uxform-required">*</span> Notes:</label>
+            <textarea id="control_3" class="uxform-textarea" cols="1" rows="4" data-desc="Notes" required></textarea>
         </div>
 
         <div class="uxform-container">
@@ -98,15 +99,54 @@
         </div>
         
         <div class="uxform-container">
-            <button type="button" class="uxform-button">Submit</button>
+            <button type="submit" id="uxform_submit" class="uxform-button">Submit</button>
         </div>
 
-        <div class="uxform-container">
-            <button type="button" class="uxform-button--block">Submit</button>
-        </div>
 
     </form>
 
-    <script src="main.js"></script>
+    <script>
+        // https://www.telerik.com/blogs/building-html5-form-validation-bubble-replacements
+        // avoid default browser validation error bubbles...
+        document.querySelector('.uxform').addEventListener( "invalid", function(event) {
+            event.preventDefault();
+        }, true);
+
+        document.getElementById("uxform_submit").addEventListener("click", function(){
+            submitFormWithJS();
+        });
+    
+    
+        function submitFormWithJS() {
+    
+            var inputs = Array.prototype.slice.call(document.querySelectorAll('.uxform input, .uxform select, .uxform textarea'));
+            var errorSummaryEl = document.querySelector('.uxform-error-summary');
+            errorSummaryEl.classList.add('uxform-hideme');
+            var errorSummaryMessage = '';
+            var areAllValid = true; 
+    
+            // Loop through them...
+            inputs.map(function (input) {
+                input.classList.remove('error');
+    
+                if (!input.checkValidity()) {
+                // when validity fails...
+                input.classList.add('error');
+                errorSummaryMessage += "<p>The <span class=\"uxform-error-summary-highlight\">".concat(input.dataset.desc, "</span> field appears to be invalid.<p>");
+                errorSummaryEl.classList.remove('uxform-hideme');
+                areAllValid = false;
+                }
+            });
+            errorSummaryEl.innerHTML = errorSummaryMessage;
+            errorSummaryEl.tabIndex = 0;
+            errorSummaryEl.focus();
+            errorSummaryEl.tabIndex = -1; 
+    
+            // only if all validation is good...
+            if (areAllValid) {
+                document.querySelector('uxform').submit();
+            }
+        }
+        </script>
 </body>
 </html>
