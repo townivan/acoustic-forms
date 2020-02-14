@@ -5,8 +5,8 @@ const browserSync = require('browser-sync').create()
 
 const myGlobs = {
     scssSource: './src/*.scss',  // includes .scss files in any subfolders of ./scss also
-    cssDest:  './dist/',
-    htmlSource: './dist/*.html'
+    cssDest:  './docs/',
+    htmlSource: './docs/*.html'
 };
 
 function compileSass(){
@@ -25,7 +25,7 @@ function reload(cb){
 function startServer(){
     browserSync.init({
         server: {
-            baseDir: "./dist/"
+            baseDir: "./docs/"
         }
         // If you are already serving your website locally using something like apache
         // You can use the proxy setting to proxy that instead
